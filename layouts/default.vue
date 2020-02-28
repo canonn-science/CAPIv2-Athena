@@ -18,9 +18,19 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar fixed app>
+    <v-app-bar
+      fixed
+      app
+      color="toolbar"
+      :class="{ 'custom-dark': theme === themes[1] }"
+    >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
+      <v-spacer />
+      <v-btn icon @click="switchTheme()">
+        <v-icon v-if="theme === themes[0]">brightness_3</v-icon>
+        <v-icon v-if="theme === themes[1]">wb_sunny</v-icon>
+      </v-btn>
     </v-app-bar>
     <v-content>
       <v-container fluid>
@@ -34,6 +44,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   data() {
     return {
@@ -48,6 +60,36 @@ export default {
       title: 'Athena',
       footerText: 'Footer text'
     }
+  },
+  computed: {
+    ...mapState({
+      themes: state => state.themes.themes
+    }),
+    theme: {
+      get() {
+        return this.$store.state.themes.theme
+      },
+      set(newTheme) {
+        this.$store.commit('themes/setTheme', newTheme)
+      }
+    }
+  },
+  methods: {
+    switchTheme() {
+      if (this.theme === this.themes[0]) {
+        this.theme = this.themes[1]
+      } else if (this.theme === this.themes[1]) {
+        this.theme = this.themes[0]
+      }
+      localStorage.setItem('theme', this.theme)
+    }
   }
 }
 </script>
+
+<style scoped>
+.custom-dark,
+.custom-dark .theme--dark.v-btn {
+  color: var(--v-primary-base);
+}
+</style>

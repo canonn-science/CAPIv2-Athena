@@ -20,5 +20,8 @@ module.exports = {
   // add your custom rules here
   rules: {
     'nuxt/no-cjs-in-config': 'off'
+  },
+  settings: {
+    'import/core-modules': ['vue', 'vuex'] // these modules are included in nuxt.js
   }
 }
