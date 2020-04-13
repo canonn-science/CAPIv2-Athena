@@ -2,12 +2,51 @@
   <v-app dark>
     <v-navigation-drawer v-model="drawer" fixed app>
       <v-list>
-        <v-list-item
+        <div v-for="(item, i) in items" :key="i">
+          <v-list-item
+            v-if="!item.subItems"
+            :key="i"
+            :to="item.to"
+            router
+            exact
+          >
+            <v-list-item-action>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-action>
+
+            <v-list-item-content>
+              <v-list-item-title v-text="item.title" />
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-group v-else :key="item.title" no-action>
+            <template v-slot:activator>
+              <v-list-item :key="i" :to="item.to" router exact>
+                <v-list-item-action>
+                  <v-icon>{{ item.icon }}</v-icon>
+                </v-list-item-action>
+
+                <v-list-item-content>
+                  <v-list-item-title v-text="item.title" />
+                </v-list-item-content>
+              </v-list-item>
+            </template>
+
+            <v-list-item
+              v-for="subItem in item.subItems"
+              :key="subItem.title"
+              :to="subItem.to"
+            >
+              <v-list-item-content>
+                <v-list-item-title v-text="subItem.title" />
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-group>
+        </div>
+        <!-- <v-list-item
           v-for="(item, i) in items"
           :key="i"
           :to="item.to"
-          router
-          exact
         >
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
@@ -15,7 +54,7 @@
           <v-list-item-content>
             <v-list-item-title v-text="item.title" />
           </v-list-item-content>
-        </v-list-item>
+        </v-list-item> -->
       </v-list>
     </v-navigation-drawer>
     <v-app-bar
@@ -64,7 +103,17 @@ export default {
         {
           icon: 'mdi-nature',
           title: 'Biology',
-          to: '/biology'
+          to: '/biology',
+          subItems: [
+            {
+              title: 'Reports',
+              to: '/biology/reports'
+            },
+            {
+              title: 'Sites',
+              to: '/biology/sites'
+            }
+          ]
         },
         {
           icon: 'mdi-map',
@@ -87,7 +136,8 @@ export default {
           to: '/thargoids'
         }
       ],
-      title: 'Athena'
+      title: 'Athena',
+      footerText: ''
     }
   },
   computed: {
