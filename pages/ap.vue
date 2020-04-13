@@ -18,7 +18,7 @@ export default {
         {
           text: 'Dessert (100g serving)',
           align: 'start',
-          sortable: false,
+          sortable: true,
           value: 'name'
         },
         { text: 'Calories', value: 'calories' },
