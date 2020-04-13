@@ -1,6 +1,6 @@
 import { mapState } from 'vuex'
 
-export default function({ app }) {
+export default function ({ app }) {
   const mixin = {
     computed: {
       ...mapState({
@@ -32,6 +32,7 @@ export default function({ app }) {
           this.theme = this.themes[0]
         }
         localStorage.setItem('theme', this.theme)
+        this.$meta().refresh() // https://github.com/nuxt-community/vuetify-module/issues/205
       } catch (err) {
         this.theme = this.themes[0]
         localStorage.setItem('theme', this.theme)
