@@ -81,11 +81,6 @@ export default {
         },
         {
           icon: 'mdi-nature',
-          title: 'AP Test',
-          to: '/ap'
-        },
-        {
-          icon: 'mdi-nature',
           title: 'Biology',
           subItems: [
             {
