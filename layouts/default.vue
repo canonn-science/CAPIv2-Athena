@@ -3,13 +3,7 @@
     <v-navigation-drawer v-model="drawer" fixed app>
       <v-list>
         <div v-for="(item, i) in items" :key="i">
-          <v-list-item
-            v-if="!item.subItems"
-            :key="i"
-            :to="item.to"
-            router
-            exact
-          >
+          <v-list-item v-if="!item.subItems" :key="i" :to="item.to">
             <v-list-item-action>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-action>
@@ -18,18 +12,15 @@
               <v-list-item-title v-text="item.title" />
             </v-list-item-content>
           </v-list-item>
-
-          <v-list-group v-else :key="item.title" no-action>
+          <v-list-group v-else :key="item.title">
             <template v-slot:activator>
-              <v-list-item :key="i" :to="item.to" router exact>
-                <v-list-item-action>
-                  <v-icon>{{ item.icon }}</v-icon>
-                </v-list-item-action>
+              <v-list-item-action>
+                <v-icon>{{ item.icon }}</v-icon>
+              </v-list-item-action>
 
-                <v-list-item-content>
-                  <v-list-item-title v-text="item.title" />
-                </v-list-item-content>
-              </v-list-item>
+              <v-list-item-content>
+                <v-list-item-title v-text="item.title" />
+              </v-list-item-content>
             </template>
 
             <v-list-item
@@ -38,23 +29,11 @@
               :to="subItem.to"
             >
               <v-list-item-content>
-                <v-list-item-title v-text="subItem.title" />
+                <v-list-item-title v-text="subItem.title"></v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list-group>
         </div>
-        <!-- <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item> -->
       </v-list>
     </v-navigation-drawer>
     <v-app-bar
@@ -103,8 +82,11 @@ export default {
         {
           icon: 'mdi-nature',
           title: 'Biology',
-          to: '/biology',
           subItems: [
+            {
+              title: 'Metrics',
+              to: '/biology/metrics'
+            },
             {
               title: 'Reports',
               to: '/biology/reports'
@@ -118,22 +100,74 @@ export default {
         {
           icon: 'mdi-map',
           title: 'Cartographics',
-          to: '/cartographics'
+          subItems: [
+            {
+              title: 'Metrics',
+              to: '/cartographics/metrics'
+            },
+            {
+              title: 'Reports',
+              to: '/cartographics/reports'
+            },
+            {
+              title: 'Sites',
+              to: '/cartographics/sites'
+            }
+          ]
         },
         {
           icon: 'mdi-fleur-de-lis',
           title: 'Geology',
-          to: '/geology'
+          subItems: [
+            {
+              title: 'Metrics',
+              to: '/geology/metrics'
+            },
+            {
+              title: 'Reports',
+              to: '/geology/reports'
+            },
+            {
+              title: 'Sites',
+              to: '/geology/sites'
+            }
+          ]
         },
         {
           icon: 'mdi-safe-square',
           title: 'Guardians',
-          to: '/guardians'
+          subItems: [
+            {
+              title: 'Metrics',
+              to: '/guardians/metrics'
+            },
+            {
+              title: 'Reports',
+              to: '/guardians/reports'
+            },
+            {
+              title: 'Sites',
+              to: '/guardians/sites'
+            }
+          ]
         },
         {
           icon: 'mdi-hexagram',
           title: 'Thargoids',
-          to: '/thargoids'
+          subItems: [
+            {
+              title: 'Metrics',
+              to: '/thargoids/metrics'
+            },
+            {
+              title: 'Reports',
+              to: '/thargoids/reports'
+            },
+            {
+              title: 'Sites',
+              to: '/thargoids/sites'
+            }
+          ]
         }
       ],
       title: 'Athena',
