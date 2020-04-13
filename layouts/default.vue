@@ -53,12 +53,41 @@ export default {
       items: [
         {
           icon: 'mdi-apps',
-          title: 'Welcome',
+          title: 'Dashboard',
           to: '/'
+        },
+        {
+          icon: 'mdi-comment-text',
+          title: 'File a Report',
+          to: '/new-report'
+        },
+        {
+          icon: 'mdi-nature',
+          title: 'Biology',
+          to: '/biology'
+        },
+        {
+          icon: 'mdi-map',
+          title: 'Cartographics',
+          to: '/cartographics'
+        },
+        {
+          icon: 'mdi-fleur-de-lis',
+          title: 'Geology',
+          to: '/geology'
+        },
+        {
+          icon: 'mdi-safe-square',
+          title: 'Guardians',
+          to: '/guardians'
+        },
+        {
+          icon: 'mdi-hexagram',
+          title: 'Thargoids',
+          to: '/thargoids'
         }
       ],
-      title: 'Athena',
-      footerText: 'Footer text'
+      title: 'Athena'
     }
   },
   computed: {
