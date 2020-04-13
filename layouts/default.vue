@@ -1,8 +1,30 @@
 <template>
   <v-app dark>
-    <v-navigation-drawer v-model="drawer" fixed app>
-      <v-list>
+    <v-app-bar
+      app
+      clipped-left
+      color="toolbar"
+      :class="{ 'custom-dark': theme === themes[1] }"
+    >
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-toolbar-title v-text="title" />
+      <v-spacer />
+      <v-btn icon @click="switchTheme()">
+        <v-icon v-if="theme === themes[0]">brightness_3</v-icon>
+        <v-icon v-if="theme === themes[1]">wb_sunny</v-icon>
+      </v-btn>
+    </v-app-bar>
+    <v-navigation-drawer
+      v-model="drawer"
+      app
+      clipped
+      class="mt-12"
+      style="top: 16px;"
+    >
+      <v-list dense>
         <div v-for="(item, i) in items" :key="i">
+          <v-divider v-if="item.divider" :key="i" class="my-4"></v-divider>
+
           <v-list-item v-if="!item.subItems" :key="i" :to="item.to">
             <v-list-item-action>
               <v-icon>{{ item.icon }}</v-icon>
@@ -29,27 +51,15 @@
               :to="subItem.to"
             >
               <v-list-item-content>
-                <v-list-item-title v-text="subItem.title"></v-list-item-title>
+                <v-list-item-subtitle
+                  v-text="subItem.title"
+                ></v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-list-group>
         </div>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar
-      fixed
-      app
-      color="toolbar"
-      :class="{ 'custom-dark': theme === themes[1] }"
-    >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title v-text="title" />
-      <v-spacer />
-      <v-btn icon @click="switchTheme()">
-        <v-icon v-if="theme === themes[0]">brightness_3</v-icon>
-        <v-icon v-if="theme === themes[1]">wb_sunny</v-icon>
-      </v-btn>
-    </v-app-bar>
     <v-content>
       <v-container fluid>
         <nuxt />
@@ -67,7 +77,7 @@ import { mapState } from 'vuex'
 export default {
   data() {
     return {
-      drawer: false,
+      drawer: true,
       items: [
         {
           icon: 'mdi-apps',
@@ -79,6 +89,31 @@ export default {
           title: 'File a Report',
           to: '/new-report'
         },
+        { divider: true },
+        {
+          icon: 'mdi-atom',
+          title: 'Celestial',
+          subItems: [
+            {
+              title: 'Metrics',
+              to: '/celestial/metrics'
+            },
+            {
+              title: 'Systems',
+              to: '/celestial/systems'
+            },
+            {
+              title: 'Bodies',
+              to: '/celestial/bodies'
+            }
+          ]
+        },
+        {
+          icon: 'mdi-account-group',
+          title: 'CMDRs',
+          to: '/cmdr'
+        },
+        { divider: true },
         {
           icon: 'mdi-nature',
           title: 'Biology',
