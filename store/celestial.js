@@ -13,9 +13,9 @@ export const mutations = {
 export const actions = {
   async fetchSystems({ commit }) {
     const response = await axios.get(
-      `https://elitebgs.app/api/ebgs/v4/systems?allegiance=federation`
+      `https://api.canonn.tech/systems?_limit=30`
     )
-    commit('setSystems', response.data.docs)
+    commit('setSystems', response.data)
     return response.data
   }
 }

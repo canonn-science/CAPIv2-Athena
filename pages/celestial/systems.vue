@@ -31,18 +31,21 @@ export default {
   data() {
     return {
       search: '',
+      loading: true,
       headers: [
         {
           text: 'Name',
           align: 'start',
           sortable: true,
-          value: 'name'
+          value: 'systemName'
         },
-        { text: 'Government', value: 'government' },
-        { text: 'Allegiance', value: 'allegiance' },
-        { text: 'State', value: 'state' },
-        { text: 'Population', value: 'population' },
-        { text: 'Security', value: 'security' }
+        { text: 'Coord X', value: 'edsmCoordX' },
+        { text: 'Coord Y', value: 'edsmCoordY' },
+        { text: 'Coord Z', value: 'edsmCoordZ' },
+        { text: 'Locked', value: 'edsmCoordLocked' },
+        { text: 'Region', value: 'region.name' },
+        { text: 'Star Type', value: 'primaryStar.type' },
+        { text: 'Scoopable', value: 'primaryStar.isScoopable' }
       ]
     }
   },
@@ -53,6 +56,7 @@ export default {
   },
   created() {
     this.$store.dispatch('celestial/fetchSystems')
+    this.loading = false
   }
 }
 </script>
