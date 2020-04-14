@@ -21,19 +21,11 @@
     <v-tabs-items v-model="tab">
       <v-tab-item v-for="item in items" :key="item.tab">
         <v-card flat>
-          <v-data-table
+          <reports-table
             :headers="headers"
-            :items="desserts"
+            :desserts="desserts"
             :search="search"
-            :items-per-page="12"
-            class="elevation-1"
-          >
-            <template v-slot:no-results>
-              <v-alert :value="true" color="error" icon="warning">
-                Your search for "{{ search }}" found no results.
-              </v-alert>
-            </template>
-          </v-data-table>
+          ></reports-table>
         </v-card>
       </v-tab-item>
     </v-tabs-items>
@@ -41,7 +33,9 @@
 </template>
 
 <script>
+import ReportsTable from '../../components/ReportsTable'
 export default {
+  components: { ReportsTable },
   data() {
     return {
       search: '',

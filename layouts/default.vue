@@ -25,7 +25,7 @@
         <div v-for="(item, i) in items" :key="i">
           <v-divider v-if="item.divider" :key="i" class="my-4"></v-divider>
 
-          <v-list-item v-if="!item.subItems" :key="i" :to="item.to">
+          <v-list-item v-else-if="!item.subItems" :key="i" :to="item.to">
             <v-list-item-action>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-action>
