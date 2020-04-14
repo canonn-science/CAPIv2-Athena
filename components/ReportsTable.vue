@@ -1,8 +1,9 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="desserts"
+    :items="records"
     :search="search"
+    :footer-props="{ 'items-per-page-options': [10, 15, 30, 50] }"
     :items-per-page="15"
     class="elevation-1"
   >
@@ -34,7 +35,7 @@ export default {
       type: Array,
       default: () => []
     },
-    desserts: {
+    records: {
       type: Array,
       default: () => []
     },

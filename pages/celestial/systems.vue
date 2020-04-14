@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      Biology Reports
+      Systems
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -15,7 +15,7 @@
     <v-card flat>
       <reports-table
         :headers="headers"
-        :desserts="systems"
+        :records="systems"
         :search="search"
       ></reports-table>
     </v-card>
@@ -31,7 +31,6 @@ export default {
   data() {
     return {
       search: '',
-      loading: true,
       headers: [
         {
           text: 'Name',
