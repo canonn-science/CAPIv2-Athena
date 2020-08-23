@@ -36,8 +36,7 @@
 </template>
 
 <script>
-import axios from 'axios'
-import consola from 'consola'
+import { capi } from '../../store/capi'
 
 // Got this code from: https://next.vuetifyjs.com/en/components/data-tables/#server-side-paginate-and-sort
 
@@ -92,53 +91,32 @@ export default {
       this.loading = true
       const { sortBy, sortDesc, page, itemsPerPage, search } = this.options
 
-      let data = await this.getSystems(
+      let data = await capi.getSystems(
         page,
         itemsPerPage,
         sortBy,
         sortDesc,
-        search
+        search,
+        {}
       )
 
       // If user has increased page and searches with no response, reset page to 1
       if (page > 1 && data.systems.length === 0) {
         this.options.page = 1
-        data = await this.getSystems(1, itemsPerPage, sortBy, sortDesc, search)
+        data = await capi.getSystems(
+          this.options.page,
+          itemsPerPage,
+          sortBy,
+          sortDesc,
+          search,
+          {}
+        )
       }
 
       this.loading = false
       return {
         items: data.systems,
         total: data.count
-      }
-    },
-    async getSystems(page, limit, sortBy, sortDesc, search) {
-      const host = 'https://api.canonn.tech/systems'
-      let url = `${host}?_limit=${limit}`
-      const start = (page - 1) * limit
-
-      // Apply sorting
-      if (sortBy.length > 0) {
-        if (sortDesc[0] === true) {
-          url = url + `&_sort=${sortBy[0]}:desc`
-        } else {
-          url = url + `&_sort=${sortBy[0]}:asc`
-        }
-      }
-
-      // Apply Searching
-      if (search) {
-        url = url + `&_q=${search}`
-      }
-
-      // Fetch Data
-      url = url + `&_start=${start}`
-      consola.log(url)
-      const response = await axios.get(url)
-
-      return {
-        systems: response.data,
-        count: parseInt(response.headers['content-range'])
       }
     }
   }
