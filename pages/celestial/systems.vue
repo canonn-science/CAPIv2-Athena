@@ -92,13 +92,19 @@ export default {
       this.loading = true
       const { sortBy, sortDesc, page, itemsPerPage, search } = this.options
 
-      const data = await this.getSystems(
+      let data = await this.getSystems(
         page,
         itemsPerPage,
         sortBy,
         sortDesc,
         search
       )
+
+      // If user has increased page and searches with no response, reset page to 1
+      if (page > 1 && data.systems.length === 0) {
+        this.options.page = 1
+        data = await this.getSystems(1, itemsPerPage, sortBy, sortDesc, search)
+      }
 
       this.loading = false
       return {
@@ -109,13 +115,7 @@ export default {
     async getSystems(page, limit, sortBy, sortDesc, search) {
       const host = 'https://api.canonn.tech/systems'
       let url = `${host}?_limit=${limit}`
-      let start = 0
-
-      // Set pages
-      // Need to figure out how to construct the start from the page
-      if (page > 1) {
-        start = page * start
-      }
+      const start = (page - 1) * limit
 
       // Apply sorting
       if (sortBy.length > 0) {
@@ -127,11 +127,11 @@ export default {
       }
 
       // Apply Searching
-      // Need to fix search + paging, if user has paged then searches returns nothing
       if (search) {
         url = url + `&_q=${search}`
       }
 
+      // Fetch Data
       url = url + `&_start=${start}`
       consola.log(url)
       const response = await axios.get(url)
