@@ -25,7 +25,22 @@
         <div v-for="(item, i) in items" :key="i">
           <v-divider v-if="item.divider" :key="i" class="my-4"></v-divider>
 
-          <v-list-item v-else-if="!item.subItems" :key="i" :to="item.to">
+          <v-list-item
+            v-else-if="item.auth === true && loggedIn === false"
+            :key="i"
+            :to="item.link"
+            link
+          >
+            <v-list-item-action>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-action>
+
+            <v-list-item-content>
+              <v-list-item-title v-text="item.title" />
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item v-else-if="!item.subItems" :key="i" :to="item.link" link>
             <v-list-item-action>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-action>
@@ -48,7 +63,8 @@
             <v-list-item
               v-for="subItem in item.subItems"
               :key="subItem.title"
-              :to="subItem.to"
+              :to="subItem.link"
+              link
             >
               <v-list-item-content>
                 <v-list-item-subtitle
@@ -58,7 +74,41 @@
             </v-list-item>
           </v-list-group>
         </div>
+
+        <v-divider class="my-4"></v-divider>
+
+        <v-list-item href="https://github.com/canonn-science" target="_blank">
+          <v-list-item-action>
+            <v-icon>{{ 'mdi-github' }}</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>{{ 'Canonn Github' }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item href="https://canonn.science" target="_blank">
+          <v-list-item-action>
+            <v-icon>{{ 'mdi-monitor-dashboard' }}</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>{{ 'Canonn Codex' }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
+      <!--
+        Do some auth stuff here
+        Hide whatever button isn't needed
+        Redirect login to login page
+        Logout delete the JWT and reset the state
+      -->
+      <template v-slot:append>
+        <div v-if="loggedIn === true" class="pa-2">
+          <v-btn block>Logout</v-btn>
+        </div>
+        <div v-else class="pa-2">
+          <v-btn to="/login" block>Login</v-btn>
+        </div>
+      </template>
     </v-navigation-drawer>
     <v-content>
       <v-container fluid>
@@ -78,16 +128,40 @@ export default {
   data() {
     return {
       drawer: true,
+      loggedIn: false,
       items: [
         {
           icon: 'mdi-apps',
           title: 'Dashboard',
-          to: '/'
+          link: '/'
         },
         {
-          icon: 'mdi-comment-text',
-          title: 'File a Report',
-          to: '/new-report'
+          icon: 'mdi-account',
+          title: 'Account',
+          link: '/login',
+          auth: true,
+          subItems: [
+            {
+              title: 'File a Report',
+              link: '/new-report'
+            },
+            {
+              title: 'My Profile',
+              link: '/user/profile'
+            },
+            {
+              title: 'My CMDRs',
+              link: '/user/cmdr'
+            },
+            {
+              title: 'API Keys',
+              link: '/user/api-keys'
+            },
+            {
+              title: 'Prefrences',
+              link: '/user/prefrences'
+            }
+          ]
         },
         { divider: true },
         {
@@ -96,22 +170,22 @@ export default {
           subItems: [
             {
               title: 'Metrics',
-              to: '/celestial/metrics'
+              link: '/celestial/metrics'
             },
             {
               title: 'Systems',
-              to: '/celestial/systems'
+              link: '/celestial/systems'
             },
             {
               title: 'Bodies',
-              to: '/celestial/bodies'
+              link: '/celestial/bodies'
             }
           ]
         },
         {
           icon: 'mdi-account-group',
           title: 'CMDRs',
-          to: '/cmdr'
+          link: '/cmdr'
         },
         { divider: true },
         {
@@ -120,15 +194,15 @@ export default {
           subItems: [
             {
               title: 'Metrics',
-              to: '/biology/metrics'
+              link: '/biology/metrics'
             },
             {
               title: 'Reports',
-              to: '/biology/reports'
+              link: '/biology/reports'
             },
             {
               title: 'Sites',
-              to: '/biology/sites'
+              link: '/biology/sites'
             }
           ]
         },
@@ -138,15 +212,15 @@ export default {
           subItems: [
             {
               title: 'Metrics',
-              to: '/cartographics/metrics'
+              link: '/cartographics/metrics'
             },
             {
               title: 'Reports',
-              to: '/cartographics/reports'
+              link: '/cartographics/reports'
             },
             {
               title: 'Sites',
-              to: '/cartographics/sites'
+              link: '/cartographics/sites'
             }
           ]
         },
@@ -156,15 +230,15 @@ export default {
           subItems: [
             {
               title: 'Metrics',
-              to: '/geology/metrics'
+              link: '/geology/metrics'
             },
             {
               title: 'Reports',
-              to: '/geology/reports'
+              link: '/geology/reports'
             },
             {
               title: 'Sites',
-              to: '/geology/sites'
+              link: '/geology/sites'
             }
           ]
         },
@@ -174,15 +248,15 @@ export default {
           subItems: [
             {
               title: 'Metrics',
-              to: '/guardians/metrics'
+              link: '/guardians/metrics'
             },
             {
               title: 'Reports',
-              to: '/guardians/reports'
+              link: '/guardians/reports'
             },
             {
               title: 'Sites',
-              to: '/guardians/sites'
+              link: '/guardians/sites'
             }
           ]
         },
@@ -192,15 +266,15 @@ export default {
           subItems: [
             {
               title: 'Metrics',
-              to: '/thargoids/metrics'
+              link: '/thargoids/metrics'
             },
             {
               title: 'Reports',
-              to: '/thargoids/reports'
+              link: '/thargoids/reports'
             },
             {
               title: 'Sites',
-              to: '/thargoids/sites'
+              link: '/thargoids/sites'
             }
           ]
         }
@@ -230,6 +304,9 @@ export default {
         this.theme = this.themes[0]
       }
       localStorage.setItem('theme', this.theme)
+    },
+    enableProfile() {
+      // blah
     }
   }
 }
