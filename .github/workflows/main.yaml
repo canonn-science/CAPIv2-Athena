@@ -1,0 +1,34 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # or the  branch you want to deploy from
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'  # specify the Node.js version you want to use
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run generate
+
+      - name: Create CNAME file
+        run: echo 'athena.canonn.social' > ./dist/CNAME
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist  # specify the output directory of your build
